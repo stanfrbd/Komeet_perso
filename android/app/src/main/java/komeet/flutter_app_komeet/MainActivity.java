@@ -1,4 +1,4 @@
-package komeet.Komeet_perso;
+package komeet.komeet_perso;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

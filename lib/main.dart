@@ -6,10 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:Komeet_perso/chat.dart';
-import 'package:Komeet_perso/const.dart';
-import 'package:Komeet_perso/login.dart';
-import 'package:Komeet_perso/settings.dart';
+import 'package:komeet_perso/chat.dart';
+import 'package:komeet_perso/const.dart';
+import 'package:komeet_perso/login.dart';
+import 'package:komeet_perso/settings.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 
