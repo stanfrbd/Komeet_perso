@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:11651511075:android:ebba3347f3468f01",
+        "mobilesdk_app_id": "1:11651511075:android:4df8a64fc556c821",
         "android_client_info": {
-          "package_name": "komeet.komeet_perso"
+          "package_name": "komeet.flutter_komeet_perso"
         }
       },
       "oauth_client": [
         {
-          "client_id": "11651511075-e7tefp1rt2l4h3h2g54981m9q35s2m5p.apps.googleusercontent.com",
+          "client_id": "11651511075-3hdqriq22q2kh72kud7vgpokt9l04b3k.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "komeet.komeet_perso",
+            "package_name": "komeet.flutter_komeet_perso",
             "certificate_hash": "4e91b9dad64f597277b25770ef9b2ce29ce0900a"
           }
         },
