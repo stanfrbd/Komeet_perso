@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: themeColor,
       ),
-      home: LoginScreen(title: 'KOMEET'),
+      home: LoginScreen(title: 'Komeet'),
       debugShowCheckedModeBanner: false,
     );
   }
@@ -87,13 +87,13 @@ class LoginScreenState extends State<LoginScreen> {
     FirebaseUser firebaseUser = await firebaseAuth.signInWithCredential(credential);
 
     if (firebaseUser != null) { // si les tokens ont bien été récupérés
-      Fluttertoast.showToast(msg: "Utilisateur existant");
       // Check is already sign up
       final QuerySnapshot result =
           await Firestore.instance.collection('users').where('id', isEqualTo: firebaseUser.uid).getDocuments();
       final List<DocumentSnapshot> documents = result.documents;
+       Fluttertoast.showToast(msg: "Utilisateur existant");
       if (documents.length == 0) {
-        Fluttertoast.showToast(msg: "Nouvel utilisateur");
+        Fluttertoast.showToast(msg: "Premier utilisateur");
         // Update data to server if new user
         Firestore.instance
             .collection('users')

@@ -16,7 +16,7 @@ class Settings extends StatelessWidget {
     return new Scaffold(
       appBar: new AppBar(
         title: new Text(
-          'REGLAGES',
+          'Réglages',
           style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -98,7 +98,7 @@ class SettingsScreenState extends State<SettingsScreen> {
             setState(() {
               isLoading = false;
             });
-            Fluttertoast.showToast(msg: "Upload success");
+            Fluttertoast.showToast(msg: "Mise à jour réussie");
           }).catchError((err) {
             setState(() {
               isLoading = false;
@@ -145,7 +145,7 @@ class SettingsScreenState extends State<SettingsScreen> {
         isLoading = false;
       });
 
-      Fluttertoast.showToast(msg: "Update success");
+      Fluttertoast.showToast(msg: "Mise à jour réussie");
     }).catchError((err) {
       setState(() {
         isLoading = false;
@@ -227,7 +227,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   // Username
                   Container(
                     child: Text(
-                      'Nickname',
+                      'Pseudo',
                       style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: primaryColor),
                     ),
                     margin: EdgeInsets.only(left: 10.0, bottom: 5.0, top: 10.0),
@@ -237,7 +237,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                       data: Theme.of(context).copyWith(primaryColor: primaryColor),
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: 'Sweetie',
+                          hintText: 'Johnny...',
                           contentPadding: new EdgeInsets.all(5.0),
                           hintStyle: TextStyle(color: greyColor),
                         ),
@@ -254,7 +254,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                   // About me
                   Container(
                     child: Text(
-                      'About me',
+                      'Statut',
                       style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: primaryColor),
                     ),
                     margin: EdgeInsets.only(left: 10.0, top: 30.0, bottom: 5.0),
@@ -264,7 +264,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                       data: Theme.of(context).copyWith(primaryColor: primaryColor),
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: 'Fun, like travel and play PES...',
+                          hintText: 'Programmer...',
                           contentPadding: EdgeInsets.all(5.0),
                           hintStyle: TextStyle(color: greyColor),
                         ),
@@ -286,7 +286,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                 child: FlatButton(
                   onPressed: handleUpdateData,
                   child: Text(
-                    'UPDATE',
+                    'METTRE A JOUR',
                     style: TextStyle(fontSize: 16.0),
                   ),
                   color: primaryColor,

@@ -245,7 +245,7 @@ class MainScreenState extends State<MainScreen> {
     Navigator.of(context)
         .pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyApp()), (Route<dynamic> route) => false);
 
-  //ajouter la ligne pour supprimer le profil et donner un message : profil supprimé
+  Firestore.instance.collection("users").document(currentUserId).delete();  // méthode pour supprimer de firebase le currentUser 
 
   }
 
