@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // il va falloir utiliser les bons login etc.
 
 class MyApp extends StatelessWidget {
+  final themeColor = Colors.grey;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,12 +30,14 @@ class LoginScreen extends StatefulWidget {
   LoginScreen({Key key, this.title}) : super(key: key);
 
   final String title;
+  final themeColor = Colors.grey;
 
   @override
   LoginScreenState createState() => LoginScreenState();
 }
 
 class LoginScreenState extends State<LoginScreen> {
+
   final GoogleSignIn googleSignIn = GoogleSignIn(); // déclaration d'un nouveau client google
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance; // nouvelle instance de firebase auth
   SharedPreferences prefs;
@@ -161,6 +164,7 @@ class LoginScreenState extends State<LoginScreen> {
 
             // Loading
             Positioned(
+
               child: isLoading // if true
                   ? Container(
                       child: Center(

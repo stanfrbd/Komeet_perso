@@ -6,9 +6,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_komeet/const.dart';
+import 'package:flutter_app_komeet/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// Color picker
+import 'package:flutter_colorpicker/block_picker.dart';
 
 class Settings extends StatelessWidget {
   @override
@@ -23,6 +27,7 @@ class Settings extends StatelessWidget {
       ),
       body: new SettingsScreen(),
     );
+
   }
 }
 
@@ -47,6 +52,25 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   final FocusNode focusNodeNickname = new FocusNode();
   final FocusNode focusNodeAboutMe = new FocusNode();
+
+  //color picker
+
+  Color currentColor = Colors.grey;
+
+  void changeColor(Color color) { // not working at the moment
+    setState(() => currentColor = color);
+    themeColor = currentColor;
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
+    setState(() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return MainScreen(currentUserId: id);
+        }),
+      );
+    },
+    );
+  }
 
   @override
   void initState() {
@@ -153,6 +177,27 @@ class SettingsScreenState extends State<SettingsScreen> {
 
       Fluttertoast.showToast(msg: err.toString());
     });
+  }
+
+  void handleChangeTheme() {
+    focusNodeNickname.unfocus();
+    focusNodeAboutMe.unfocus();
+
+    // launch theme changer...
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Choisissez une couleur'),
+          content: SingleChildScrollView(
+            child: BlockPicker(
+              pickerColor: currentColor,
+              onColorChanged: changeColor,
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -287,6 +332,22 @@ class SettingsScreenState extends State<SettingsScreen> {
                   onPressed: handleUpdateData,
                   child: Text(
                     'METTRE A JOUR',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  color: primaryColor,
+                  highlightColor: new Color(0xff8d93a0),
+                  splashColor: Colors.transparent,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
+                ),
+                margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
+              ),
+
+              Container(
+                child: FlatButton(
+                  onPressed: handleChangeTheme,
+                  child: Text(
+                    'CHANGER DE THEME',
                     style: TextStyle(fontSize: 16.0),
                   ),
                   color: primaryColor,
