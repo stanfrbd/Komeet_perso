@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_komeet/const.dart';
-import 'package:flutter_app_komeet/main.dart';
+import 'package:flutter_app_komeet/login.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +21,7 @@ class Settings extends StatelessWidget {
       appBar: new AppBar(
         title: new Text(
           'Réglages',
-          style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+          style: TextStyle(color: ThemeKomeet.primaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -56,16 +56,17 @@ class SettingsScreenState extends State<SettingsScreen> {
   //color picker
 
   Color currentColor = Colors.grey;
+  static String themeTxt;
 
-  void changeColor(Color color) { // not working at the moment
-    setState(() => currentColor = color);
-    themeColor = currentColor;
-    //Navigator.push(context, MaterialPageRoute(builder: (context) => Settings()));
+  void changeColor(Color color) {
+    currentColor = color;
     setState(() {
+      ThemeKomeet.themeColor = currentColor;
+      Fluttertoast.showToast(msg: "Couleur Changée");
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) {
-          return MainScreen(currentUserId: id);
+          return MyApp();
         }),
       );
     },
@@ -179,29 +180,61 @@ class SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  void checkTheme() {
+    if (ThemeKomeet.darkTheme) {
+      themeTxt = "MODE CLAIR";
+    }
+    else {
+      themeTxt = "MODE SOMBRE";
+    }
+  }
   void handleChangeTheme() {
     focusNodeNickname.unfocus();
     focusNodeAboutMe.unfocus();
-
-    // launch theme changer...
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Choisissez une couleur'),
-          content: SingleChildScrollView(
-            child: BlockPicker(
-              pickerColor: currentColor,
-              onColorChanged: changeColor,
+    if (!ThemeKomeet.darkTheme) {
+      // launch theme changer...
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Choisissez une couleur'),
+            content: SingleChildScrollView(
+              child: BlockPicker(
+                pickerColor: currentColor,
+                onColorChanged: changeColor,
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
+  }
+
+  void handleDarkTheme() {
+    if (!ThemeKomeet.darkTheme) {
+      setState(() {
+        ThemeKomeet.enableDarkMode(true);
+      });
+    }
+    else if (ThemeKomeet.darkTheme){
+      setState(() {
+        ThemeKomeet.enableDarkMode(false);
+      });
+    }
+    checkTheme();
+      Fluttertoast.showToast(msg: "Changement");
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return MyApp();
+        }),
+      );
+
   }
 
   @override
   Widget build(BuildContext context) {
+    checkTheme();
     return Stack(
       children: <Widget>[
         SingleChildScrollView(
@@ -219,7 +252,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                                     placeholder: (context, url) => Container(
                                           child: CircularProgressIndicator(
                                             strokeWidth: 2.0,
-                                            valueColor: AlwaysStoppedAnimation<Color>(themeColor),
+                                            valueColor: AlwaysStoppedAnimation<Color>(ThemeKomeet.themeColor),
                                           ),
                                           width: 90.0,
                                           height: 90.0,
@@ -236,7 +269,7 @@ class SettingsScreenState extends State<SettingsScreen> {
                               : Icon(
                                   Icons.account_circle,
                                   size: 90.0,
-                                  color: greyColor,
+                                  color: ThemeKomeet.greyColor,
                                 ))
                           : Material(
                               child: Image.file(
@@ -251,12 +284,12 @@ class SettingsScreenState extends State<SettingsScreen> {
                       IconButton(
                         icon: Icon(
                           Icons.camera_alt,
-                          color: primaryColor.withOpacity(0.5),
+                          color: ThemeKomeet.primaryColor.withOpacity(0.5),
                         ),
                         onPressed: getImage,
                         padding: EdgeInsets.all(30.0),
                         splashColor: Colors.transparent,
-                        highlightColor: greyColor,
+                        highlightColor: ThemeKomeet.greyColor,
                         iconSize: 30.0,
                       ),
                     ],
@@ -273,18 +306,18 @@ class SettingsScreenState extends State<SettingsScreen> {
                   Container(
                     child: Text(
                       'Pseudo',
-                      style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: primaryColor),
+                      style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: ThemeKomeet.primaryColor),
                     ),
                     margin: EdgeInsets.only(left: 10.0, bottom: 5.0, top: 10.0),
                   ),
                   Container(
                     child: Theme(
-                      data: Theme.of(context).copyWith(primaryColor: primaryColor),
+                      data: Theme.of(context).copyWith(primaryColor: ThemeKomeet.primaryColor),
                       child: TextField(
                         decoration: InputDecoration(
                           hintText: 'Johnny...',
                           contentPadding: new EdgeInsets.all(5.0),
-                          hintStyle: TextStyle(color: greyColor),
+                          hintStyle: TextStyle(color: ThemeKomeet.greyColor),
                         ),
                         controller: controllerNickname,
                         onChanged: (value) {
@@ -299,19 +332,19 @@ class SettingsScreenState extends State<SettingsScreen> {
                   // About me
                   Container(
                     child: Text(
-                      'Statut',
-                      style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: primaryColor),
+                      'Langue',
+                      style: TextStyle(fontStyle: FontStyle.italic, fontWeight: FontWeight.bold, color: ThemeKomeet.primaryColor),
                     ),
                     margin: EdgeInsets.only(left: 10.0, top: 30.0, bottom: 5.0),
                   ),
                   Container(
                     child: Theme(
-                      data: Theme.of(context).copyWith(primaryColor: primaryColor),
+                      data: Theme.of(context).copyWith(primaryColor: ThemeKomeet.primaryColor),
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: 'Programmer...',
+                          hintText: 'Français...',
                           contentPadding: EdgeInsets.all(5.0),
-                          hintStyle: TextStyle(color: greyColor),
+                          hintStyle: TextStyle(color: ThemeKomeet.greyColor),
                         ),
                         controller: controllerAboutMe,
                         onChanged: (value) {
@@ -334,15 +367,14 @@ class SettingsScreenState extends State<SettingsScreen> {
                     'METTRE A JOUR',
                     style: TextStyle(fontSize: 16.0),
                   ),
-                  color: primaryColor,
+                  color: ThemeKomeet.primaryColor,
                   highlightColor: new Color(0xff8d93a0),
                   splashColor: Colors.transparent,
                   textColor: Colors.white,
                   padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
                 ),
-                margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
+                margin: EdgeInsets.only(top: 50.0, bottom: 10.0),
               ),
-
               Container(
                 child: FlatButton(
                   onPressed: handleChangeTheme,
@@ -350,13 +382,28 @@ class SettingsScreenState extends State<SettingsScreen> {
                     'CHANGER DE THEME',
                     style: TextStyle(fontSize: 16.0),
                   ),
-                  color: primaryColor,
+                  color: ThemeKomeet.primaryColor,
                   highlightColor: new Color(0xff8d93a0),
                   splashColor: Colors.transparent,
                   textColor: Colors.white,
                   padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
                 ),
-                margin: EdgeInsets.only(top: 50.0, bottom: 50.0),
+                margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+              ),
+              Container(
+                child: FlatButton(
+                  onPressed: handleDarkTheme,
+                  child: Text(
+                    themeTxt,
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  color: ThemeKomeet.primaryColor,
+                  highlightColor: new Color(0xff8d93a0),
+                  splashColor: Colors.transparent,
+                  textColor: Colors.white,
+                  padding: EdgeInsets.fromLTRB(30.0, 10.0, 30.0, 10.0),
+                ),
+                margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
               ),
             ],
           ),
@@ -368,7 +415,7 @@ class SettingsScreenState extends State<SettingsScreen> {
           child: isLoading
               ? Container(
                   child: Center(
-                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(themeColor)),
+                    child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(ThemeKomeet.themeColor)),
                   ),
                   color: Colors.white.withOpacity(0.8),
                 )

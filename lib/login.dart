@@ -9,20 +9,29 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// il va falloir utiliser les bons login etc.
 
 class MyApp extends StatelessWidget {
-  final themeColor = Colors.grey;
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Komeet',
-      theme: ThemeData(
-        primaryColor: themeColor,
-      ),
-      home: LoginScreen(title: 'Komeet'),
-      debugShowCheckedModeBanner: false,
-    );
+    if (!ThemeKomeet.darkTheme) {
+      return MaterialApp(
+        title: 'Komeet',
+        theme: new ThemeData(
+          primarySwatch: ThemeKomeet.themeColor,
+
+        ),
+        home: LoginScreen(title: 'Komeet'),
+        debugShowCheckedModeBanner: false,
+      );
+    }
+  else {
+      return MaterialApp(
+        title: 'Komeet',
+        theme: new ThemeData.dark(), // Mode sombre
+        home: LoginScreen(title: 'Komeet'),
+        debugShowCheckedModeBanner: false,
+      );
+    }
   }
 }
 
@@ -30,7 +39,6 @@ class LoginScreen extends StatefulWidget {
   LoginScreen({Key key, this.title}) : super(key: key);
 
   final String title;
-  final themeColor = Colors.grey;
 
   @override
   LoginScreenState createState() => LoginScreenState();
@@ -142,7 +150,7 @@ class LoginScreenState extends State<LoginScreen> {
         appBar: AppBar(
           title: Text(
             widget.title,
-            style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+            style: TextStyle(color: ThemeKomeet.primaryColor, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -169,7 +177,7 @@ class LoginScreenState extends State<LoginScreen> {
                   ? Container(
                       child: Center(
                         child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(themeColor),
+                          valueColor: AlwaysStoppedAnimation<Color>(ThemeKomeet.themeColor),
                         ),
                       ),
                       color: Colors.white.withOpacity(0.8),
