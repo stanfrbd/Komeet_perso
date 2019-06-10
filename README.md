@@ -1,6 +1,6 @@
-# flutter_app_komeet
+# flutter_komeet_perso
 
-Projet tutoré Komeet
+Ma version de Komeet
 
 ## Contenu
 
